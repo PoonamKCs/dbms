@@ -1,0 +1,25 @@
+body { 
+    background-color: rgb(66, 196, 196);
+ }
+ h1 {
+     color: rgb(13, 13, 17);font-size: 20px;
+     
+    
+ }
+ .l{
+ width: 400px;
+ margin: auto;
+ margin: 10 0 0 350px;
+ padding: 80px;
+ background: #f7ad1b;
+ border-radius: 10px ;}
+
+ h2{
+ background-color:light-yellow;
+ color:rgb(20, 18, 18);
+ text-align:center-right;
+  width:500px;}
+     
+ .img {
+     padding-left:100px;
+   }

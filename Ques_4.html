@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Question - 4 </title>
+  <style type="text/css">
+    table{
+      border: 2px solid black;
+      border-collapse: collapse;
+      width: 90%;
+      margin: auto;
+	  
+    }
+    td,th{
+      border: 2px solid black;
+      padding: 5px;
+    }
+    #t1{
+      text-align: center;
+	  background-color:white;
+    }
+	body{
+	background-color:#FFFFB7;
+	}
+	h1{
+	text-align: center;
+	text-decoration:underline;
+	}
+  </style>
+</head>
+<body>
+  <h1>TABLES</h1>
+  <table id="t1"></table>
+  <script type="text/javascript">
+    function getRandomColor() {
+        var letters = '0123456789ABCDEF';
+        var color = '#';
+        for (var i = 0; i <6; i++) {
+          color += letters[Math.floor(Math.random()*16)];
+        }
+      return color;
+    }
+    var table = document.getElementById('t1');
+    var number = 2;
+    var interval = setInterval(print_tables,5000);
+    function print_tables(){
+      if (number == 10) 
+      {
+        clearInterval(interval);
+      }
+      var result = "";
+      for(var i = 1; i<= 10; i++){
+        result = result + "<td>"+ number + "*" + i + "=" + number * i+"</td>";
+      }
+      number++;
+      var row = document.createElement('tr');
+      row.style.color= getRandomColor();
+      row.style.fontSize = (number+12)+"px";
+      row.innerHTML=result;
+      table.append(row);
+    }
+  </script>
+
+</body>
+</html>

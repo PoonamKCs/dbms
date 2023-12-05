@@ -1,0 +1,46 @@
+<html>
+    <head>
+
+
+
+
+    </head>
+    <body>
+        <h3>Question - 5</h3>
+        <p id="10">Information technology is building communications networks for a company, safeguarding data and information, creating and administering databases, helping employees troubleshoot problems with their computers or mobile devices, or doing a range of other work to ensure the efficiency and security of business information </p><br><br>
+           <input type="button" value="red" id="1"/>
+           <input type="button" value="blue" id="2"/>
+           <input type="button" value="Green" id="3"/><br><br>
+           <input type="button" value="10" id="4"/>
+           <input type="button" value="20" id="5"/>
+           <input type="button" value="30" id="6"/><br><br>
+           <input type="button" value="Algerian" id="7"/>
+           <input type="button" value="aerial" id="8"/>
+           <input type="button" value="times new roman" id="9"/>
+        <script>
+         function color1(value){
+            document.getElementById("10").style.color = value;
+         }
+         function font1(value){
+            document.getElementById("10").style.fontSize=value;
+         }
+         function fontfamily1(value){
+            document.getElementById("10").style.fontFamily = value;
+         }
+
+         document.getElementById("1").addEventListener("click",()=> {color1("red")})
+         document.getElementById("2").addEventListener("click",()=> {color1("blue")})
+         document.getElementById("3").addEventListener("click",()=> {color1("Green")})
+         document.getElementById("4").addEventListener("click",()=> {font1("10px")})
+         document.getElementById("5").addEventListener("click",()=> {font1("20px")})
+         document.getElementById("6").addEventListener("click",()=> {font1("30px")})
+         document.getElementById("1").addEventListener("click",()=> {fontfamily1("Algerian")})
+         document.getElementById("1").addEventListener("click",()=> {fontfamily1("aerial")})
+         document.getElementById("1").addEventListener("click",()=> {fontfamily1("times new roman")})
+         
+        </script>
+    </body>
+
+</html>
+
+
