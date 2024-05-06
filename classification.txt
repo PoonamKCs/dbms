@@ -1,0 +1,85 @@
+05.06 9:57 PM
+Churn 
+import numpy as np
+import pandas as pd
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn.tree import DecisionTreeClassifier
+from sklearn.metrics import classification_report
+from sklearn.metrics import accuracy_score
+from sklearn.model_selection import train_test_split
+from sklearn.naive_bayes import GaussianNB
+from sklearn import preprocessing
+
+d= pd.read_csv("Churn_Modelling.csv")
+d
+d["Gender"]=d["Gender"].map({"Female": 1, "Male": 0})
+d
+data=d.drop(["RowNumber","Surname"],axis=1)
+
+df= pd.get_dummies(data, columns =["Geography"])
+df
+y = df["Exited"]
+y
+
+x= df.drop(["Exited"],axis=1)
+x
+y=pd.DataFrame(y)
+
+
+x_train,x_test,y_train,y_test = train_test_split(x,y,test_size=0.25,random_state=10)
+x_train.shape
+y_train.shape
+
+
+from sklearn.ensemble import RandomForestRegressor
+model = RandomForestRegressor()
+model.fit(x_train,y_train)
+model.predict(x_test)
+model.score(x_test,y_test)
+
+
+deci_tree =DecisionTreeClassifier(criterion ="entropy") # By default gini
+deci_tree.fit(x_train,y_train)
+prediction=deci_tree.predict(x_test)
+accuracy_hold=accuracy_score(y_test,prediction)
+a1= accuracy_hold*100
+print( " Accuracy for Decision Tree",a1 ,"%")
+
+
+knn = KNeighborsClassifier()
+knn.fit(x_train,y_train)
+prediction2 = knn.predict(x_test)
+print("Accuracy for K-nearest ")
+a2 = accuracy_score(y_test,prediction2)
+print(a2 *100)
+
+
+nb=GaussianNB()
+nb.fit(x_train,y_train)
+prediction_nb =nb.predict(x_test)
+print("Accuracy of Test Data")
+nb_score=accuracy_score(y_test,prediction_nb)
+a3 = nb_score*100
+print("Naive Bayes Accuracy :",a3,"%")
+
+
+from sklearn import svm
+sv = svm.SVC(kernel='linear') # Linear Kernel
+from sklearn.preprocessing import StandardScaler
+scaler = StandardScaler()
+x_train_standard = scaler.fit_transform(x_train)
+x_test_standard = scaler.transform(x_test)
+sv.fit(x_train_standard, y_train)
+y_pred = sv.predict(x_test_standard)
+sv.fit(x_train_standard, y_train)
+sv.score(x_test_standard, y_test)
+from sklearn import metrics
+svm_score =accuracy_score(y_test, y_pred)
+a4= svm_score*100
+print("SVM Accuracy :", a4,"%")
+
+from sklearn import linear_model, datasets
+reg= linear_model.LinearRegression().fit(x_train, y_train)
+reg
+reg.score(x_test,y_test)
+
