@@ -1,0 +1,136 @@
+05.06 9:11 PM
+
+Question 7 
+import numpy as np
+matrix = np.array([[11, -22, 3],
+                    [-4, 56, -6],
+                    [7, -48, 90]])
+
+# Convert matrix data to absolute values
+abs_m= np.abs(matrix)
+print("Original matrix:")
+print(matrix)
+print("Matrix with absolute values:")
+print(abs_m)
+
+
+import numpy as np
+
+# Create a sample matrix
+matrix = np.array([[1, 2, 3],
+                    [4, 5, 6],
+                    [7, 8, 9]])
+
+# Take the negative of matrix values
+neg_m= -matrix
+print("Original matrix:")
+print(matrix)
+print("Matrix with negative values:")
+print(neg_m)
+
+
+data = np.delete(matrix, 0, 0) 
+print("data  after 1 st row   deleted :\n", data) 
+# delete 1 st column 
+data = np.delete(matrix, 0, 1) 
+print("data  after 1 st  column  deleted :\n", data) 
+print("Original matrix:")
+print(matrix)
+# Adding a row
+new_row = np.array([10, 11, 12])
+matrix_with_row = np.vstack([matrix, new_row])
+print("Matrix with added row:")
+print(matrix_with_row)
+
+matrix = np.array([[1, 2, 3],
+                    [4, 5, 6],
+                    [7, 8, 9]])
+
+# Find maximum and minimum values
+max_value = np.max(matrix)
+min_value = np.min(matrix)
+
+# Find maximum and minimum values in a row or column
+max_in_row = np.max(matrix, axis=1)
+min_in_column = np.min(matrix, axis=0)
+
+print("Original matrix:")
+print(matrix)
+print("\nMaximum value in the matrix:", max_value)
+print("Minimum value in the matrix:", min_value)
+print("\nMaximum values in each row:", max_in_row)
+print("Minimum values in each column:", min_in_column)
+
+import numpy as np
+
+# Find the sum of all elements
+total_sum = np.sum(matrix)
+
+row0 = np.sum(matrix[0, :])
+column1 = np.sum(matrix[:, 1])
+print("Sum of all elements in the matrix:", total_sum)
+print("Sum of elements in row 0:", row0)
+print("Sum of elements in column 1:", column1)
+
+ 
+
+Question 8
+
+import numpy as np
+import matplotlib.pyplot as plt
+
+# Create sample data
+data = np.random.randn(1000)  # Random data for histogram
+x = np.linspace(0, 10, 100)   # X values for sine/cosine plot
+y_sin = np.sin(x)             # Sine values
+y_cos = np.cos(x)             # Cosine values
+
+# Histogram plot
+plt.figure(figsize=(8, 6))
+plt.hist(data, bins=30, alpha=0.5, color='blue')
+plt.title('Histogram')
+plt.xlabel('Value')
+plt.ylabel('Frequency')
+plt.grid(True)
+plt.show()
+
+# Sine and Cosine plot
+plt.figure(figsize=(8, 6))
+plt.plot(x, y_sin, label='Sine', color='red', linestyle='--')
+plt.plot(x, y_cos, label='Cosine', color='green', linestyle='-')
+plt.title('Sine and Cosine Functions')
+plt.xlabel('X-axis')
+plt.ylabel('Y-axis')
+plt.legend()
+plt.grid(True)
+plt.show()
+
+
+Question -12
+
+import numpy as np
+
+# Create sample matrices
+matrix1 = np.array([[1, 2, 3], [4, 5, 6]])
+matrix2 = np.array([[7, 8, 9], [10, 11, 12]])
+
+# Transpose of a matrix
+transpose_matrix1 = np.transpose(matrix1)
+print("Transpose of matrix1:")
+print(transpose_matrix1)
+
+# Addition of matrices
+matrix_sum = matrix1 + matrix2
+print("\nMatrix Sum:")
+print(matrix_sum)
+
+# Subtraction of matrices
+matrix_diff = matrix1 - matrix2
+print("\nMatrix Difference:")
+print(matrix_diff)
+
+# Multiplication of matrices
+matrix_product = np.dot(matrix1, np.transpose(matrix2))  # or matrix1.dot(matrix2.T)
+print("\nMatrix Product:")
+print(matrix_product)
+
