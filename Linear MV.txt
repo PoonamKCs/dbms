@@ -14,6 +14,10 @@ train_data = train.values
 Y = train_data[:, -1].reshape(train_data.shape[0], 1)
 X = train_data[:, :-1]
 
+test_data = test.values
+Y_test = test_data[:, -1].reshape(test_data.shape[0], 1)
+X_test = test_data[:, :-1]
+
 print("Shape of X_train :", X.shape)
 print("Shape of Y_train :", Y.shape)
 print("Shape of X_test :", X_test.shape)
