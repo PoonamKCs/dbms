@@ -1,0 +1,155 @@
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+from sklearn.datasets import load_iris
+from sklearn.preprocessing import StandardScaler
+from sklearn.cluster import AgglomerativeClustering
+from scipy.cluster.hierarchy import dendrogram, linkage
+from sklearn.cluster import DBSCAN
+from sklearn.neighbors import NearestNeighbors
+from sklearn.metrics import accuracy_score
+
+iris = load_iris()
+data = iris.data
+target = iris.target
+iris
+
+target
+
+iris_df = pd.DataFrame(data, columns=iris.feature_names)
+iris_df
+
+iris_df.isna().sum()
+
+iris_df["sepal length (cm)"].unique()
+
+scaler = StandardScaler()
+std = scaler.fit_transform(data)
+std
+
+# Agglomerative clustering
+agg_clustering = AgglomerativeClustering(n_clusters=3)
+y_pred = agg_clustering.fit_predict(std)
+ac=accuracy_score(target,y_pred)
+print("Accuracy Score - Agglomerative Hierarchical Clustering:", ac*100)
+
+
+plt.scatter(std[:, 0], std[:, 1], c=y_pred)
+plt.title('Agglomerative Hierarchical Clustering (For Sepal Length and Sepal Width)')
+plt.xlabel('Sepal Length (Standardized)')
+plt.ylabel('Sepal Width (Standardized)')
+plt.colorbar()
+plt.show()
+
+
+plt.scatter(std[:, 2], std[:, 3], c=y_pred,label = ["Setosa","Versicolor","Virginica"])
+plt.title('Agglomerative Hierarchical Clustering (For Petal Length and Petal Width)')
+plt.xlabel('Petal Length (Standardized)')
+plt.ylabel('Petal Width (Standardized)')
+plt.colorbar()
+plt.legend(["Setosa","Versicolor","Virginica"])
+plt.show()
+
+
+
+z = linkage(std, method='ward')
+z
+
+plt.figure(figsize=(12, 6))
+dendrogram(z)
+plt.xlabel('Values')
+plt.ylabel('Distance')
+plt.title('Hierarchical Clustering Dendrogram')
+plt.show()
+
+
+#K-means
+from sklearn.cluster import KMeans
+
+cluster_sizes = range(1, 150)
+sse = []
+for k in cluster_sizes:
+    kmeans = KMeans(n_clusters=k)
+    kmeans.fit(std)
+    sse.append(kmeans.inertia_)
+sse
+
+plt.plot(cluster_sizes, sse, marker='*')
+
+plt.xlabel('Number of clusters (K)')
+plt.ylabel('Sum of Squared Errors (SSE)')
+plt.show()
+
+
+cluster_sizes = range(1, 10)
+sse = []
+for k in cluster_sizes:
+    kmeans = KMeans(n_clusters=k)
+    kmeans.fit(std)
+    sse.append(kmeans.inertia_)
+
+plt.plot(cluster_sizes, sse, marker='*')
+
+plt.xlabel('Number of clusters (K)')
+plt.ylabel('Sum of Squared Errors (SSE)')
+plt.show()
+
+
+k_opt = KMeans(n_clusters=3)
+k_opt.fit(std)
+
+
+plt.figure(figsize=(12, 6))
+cluster_names = {0: "Setosa", 1: "Versicolor", 2: "Virginica"}
+
+for i in range(optimal_k):
+    plt.scatter(std[k_opt.labels_ == i, 0], std[k_opt.labels_ == i, 1],label=cluster_names[i])
+
+plt.scatter(k_opt.cluster_centers_[:, 0], k_opt.cluster_centers_[:, 1], s=300, c='red', marker='*', label='Centroids')
+plt.title('KMeans Clustering of Iris Dataset')
+plt.xlabel('Sepal Length (cm)')
+plt.ylabel('Sepal Width (cm)')
+plt.legend()
+plt.show()
+
+
+
+neighbors = NearestNeighbors(n_neighbors=2)
+neighbors_fit = neighbors.fit(std)
+distances, indices = neighbors_fit.kneighbors(std)
+distances = np.sort(distances, axis=0)
+distances = distances[:,1]
+plt.plot(distances)
+plt.xlabel('Data Points')
+plt.ylabel('Epsilon')
+plt.title('DBSCAN Epsilon Knee Point')
+plt.show()
+
+nn = NearestNeighbors(n_neighbors=2)
+nn.fit(std)
+distances, _ = nn.kneighbors(std)
+distances = np.sort(distances[:,1])
+
+
+plt.plot(distances)
+plt.xlabel("Points sorted by distance")
+plt.ylabel("Distance to 2nd nearest neighbor")
+plt.title("Knee Point for DBSCAN")
+plt.show()
+
+eps = 0.8
+min_samples = 5
+metric = 'euclidean'
+
+dbscan = DBSCAN(eps=eps, min_samples=min_samples, metric="euclidean")
+labels = dbscan.fit_predict(std)
+
+
+plt.figure(figsize=(12, 6))
+cluster_names = {0: "Setosa", 1: "Versicolor", 2: "Virginica"}
+plt.scatter(std[:,0], std[:,1], c=labels,label=cluster_names[i])
+plt.xlabel("Sepal Length (cm)")
+plt.ylabel("Sepal Length (cm)")
+plt.title("DBSCAN Clustering")
+plt.colorbar(label="Cluster Label")
+plt.show()

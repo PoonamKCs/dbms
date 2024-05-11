@@ -1,0 +1,44 @@
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+!pip install efficient-apriori
+from efficient_apriori import apriori
+df=pd.read_csv("groceriesDataset.csv")
+df
+df = df.drop(['Item(s)'], axis = 1)
+df
+f = lambda record: [x for x in record if x is not np.nan] 
+trans = list(map(f, df.values))
+trans[:5]
+itemsets, rules = apriori(trans, min_support = 0.05, min_confidence = 0.05)
+itemsets
+rules
+itemsets, rules = apriori(trans, min_support = 0.05, min_confidence = 0.25)
+itemsets
+rules
+
+frequent_itemsets = []
+for size, itemsets in itemsets.items():
+    for items, support in itemsets.items():
+        frequent_itemsets.append((items, support))
+
+frequent_itemsets
+sorted_itemsets = sorted(frequent_itemsets, key = lambda x: x[1], reverse = True)
+
+sorted_itemsets
+for items, support in sorted_itemsets:
+    print(f"Items: {', '.join(items)} - support: {support}")
+top_5_sorted_itemsets = sorted_itemsets[:5]
+top_5_sorted_itemsets
+
+import matplotlib.pyplot as plt
+item_names = [', '.join(items) for items, _ in top_5_sorted_itemsets]
+support_values = [support for _, support in top_5_sorted_itemsets]
+
+plt.figure(figsize=(10,5))
+plt.bar(item_names, support_values, color = 'pink')
+plt.xlabel('Itemsets')
+plt.ylabel('Support')
+plt.title('Top 5 Sorted Frequent Itemsets')
+plt.xticks(rotation = 55, ha = 'right')
+plt.show()

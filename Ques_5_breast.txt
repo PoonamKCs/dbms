@@ -1,0 +1,142 @@
+!pip install scikit-learn
+!pip install sklearn
+from matplotlib import pyplot as plt
+from sklearn.datasets import load_iris
+from sklearn.datasets import load_breast_cancer
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn.tree import DecisionTreeClassifier,plot_tree
+from sklearn.metrics import classification_report
+from sklearn.metrics import accuracy_score
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import confusion_matrix,precision_score,recall_score,f1_score,ConfusionMatrixDisplay
+
+d = load_breast_cancer()
+x = d.data
+y = d.target
+
+
+print(x.shape)
+print(y.shape)
+
+k_size = 0.25
+r_seed = 100
+X_train,X_test,y_train,y_test=train_test_split(x,y,test_size=k_size,random_state=r_seed)
+print("Shape of X_train" ,X_train.shape)
+print("Shape of y_train" ,y_train.shape)
+print("Shape of X_test" ,X_test.shape)
+print("Shape of y_test" ,y_test.shape)
+
+hold out
+
+deci_tree =DecisionTreeClassifier(criterion ="entropy") # By default gini
+deci_tree.fit(X_train,y_train)
+prediction=deci_tree.predict(X_test)
+from sklearn import tree 
+plt.figure(figsize=(12, 8))
+tree.plot_tree(deci_tree, filled=True)
+plt.show()
+
+
+fig,(ax1)=plt.subplots()
+fig.set_size_inches(15,5)
+ax1.set_title("Decision tree")
+ConfusionMatrixDisplay.from_estimator(deci_tree,X_test,y_test,ax=ax1)
+accuracy_hold=accuracy_score(y_test,prediction)
+a1= accuracy_hold*100
+print( "Hold Out On Test Data (Decision Tree) ",a1 ,"%")
+
+print("Classification Report on the Test Data (Decision Tree) \n",classification_report(y_test,prediction))
+
+
+knn = KNeighborsClassifier()
+knn.fit(X_train,y_train)
+prediction2 = knn.predict(X_test)
+print("Accuracy ")
+a = accuracy_score(y_test,prediction2)
+a2 = a*100
+print(a2)
+print("Classification Report on the Test Data (KNN) \n",classification_report(y_test,prediction2),"%")
+
+
+from sklearn.naive_bayes import GaussianNB
+#fitting the model
+nb=GaussianNB()
+nb.fit(X_train,y_train)
+prediction_nb =nb.predict(X_test)
+
+print("Accuracy of Test Data")
+nb_score=accuracy_score(y_test,prediction_nb)
+
+a3 = nb_score*100
+print("Naive Bayes Accuracy :",a3,"%")
+print("Classification report on test data")
+print(classification_report(y_test,prediction_nb))
+
+
+
+#Cross validation
+
+from sklearn.model_selection import cross_val_score
+scores = cross_val_score(deci_tree,d.data,d.target,cv=5)
+mean_accuracy =scores.mean()
+    
+a5 = mean_accuracy*100
+print("Decision tree accuracy: " ,a5,"%")
+scores1 = cross_val_score(knn,d.data,d.target,cv=5)
+mean_accuracy1 =scores1.mean()
+     
+a6 = mean_accuracy1*100
+print("Knn accuracy: " ,a6,"%")
+scores2 = cross_val_score(nb,d.data,d.target,cv=5)
+mean_accuracy2 =scores2.mean()
+std_accuracy2=scores2.std()
+     
+a7 = mean_accuracy2*100
+print("Cross Validation accuracy: " ,a7,"%")
+
+
+
+#subsampling
+
+import numpy as np
+k=20
+dta = []
+for i in range(k):
+    x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=.25)
+    deci_tree.fit(x_train, y_train)
+    dta.append(deci_tree.score(x_test, y_test))
+a4 = np.mean(dta)*100
+print("Decision tree accuracy: " ,a4,"%")
+
+
+import numpy as np
+k=20
+dta = []
+for i in range(k):
+    x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=.25)
+    knn.fit(x_train, y_train)
+    dta.append(knn.score(x_test, y_test))
+a9 = np.mean(dta)*100
+print("K-nearest accuracy: " ,a9,"%")
+
+
+
+import numpy as np
+k=20
+dta = []
+for i in range(k):
+    x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=.25)
+    nb.fit(x_train, y_train)
+    dta.append(nb.score(x_test, y_test))
+a10 = np.mean(dta)*100
+print("Naive Bayes accuracy: " ,a10,"%")
+
+print("\nACCURACIES OF DIFFERENT CLASSIFIERS WITH DIFFERENT METHODS:")
+data= {
+    "Hold Out" :[a1,a2,a3],
+    "Cross Validation " :[a5,a6,a7],
+    "Random Subsampling" :[a4,a9,a10]
+}
+
+df=pd.DataFrame(data,index=pd.Index(["Decision Tree" ,"K-Nearest","Naive Bayes"],name="CLASSIFIER"),columns=pd.Index(["Hold Out","Cross Validation " ,"Random Subsampling"]))
+df

@@ -1,0 +1,22 @@
+import pandas as pd
+from sklearn.datasets import load_wine
+from sklearn.preprocessing import StandardScaler
+from sklearn.preprocessing import MinMaxScaler
+from sklearn.datasets import load_iris
+iris=load_iris()
+iris
+df1=pd.DataFrame(data=iris.data,columns=iris.feature_names)
+df1
+df1["class"]=iris.target
+df1
+df1.describe()
+df1.mean()
+df1.std()
+min_max_scaler=MinMaxScaler()
+normalise=min_max_scaler.fit_transform(df1)
+normalise
+scaler=StandardScaler()
+scaled=scaler.fit_transform(df1)
+scaled
+scaled.mean()
+scaled.std()

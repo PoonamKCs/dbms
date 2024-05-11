@@ -1,0 +1,32 @@
+import pandas as pd
+from sklearn.datasets import load_wine
+from sklearn.preprocessing import StandardScaler
+from sklearn.preprocessing import MinMaxScaler
+
+wine_data=load_wine()
+wine_data
+df=pd.DataFrame(data=wine_data.data,columns=wine_data.feature_names)
+df
+
+df["class"]=wine_data.target
+
+df["alcohol"].unique
+
+df.isnull().any()
+
+df.mean()
+df.std()
+min_max_scaler=MinMaxScaler()
+normalise=min_max_scaler.fit_transform(df)
+normalise
+
+
+
+scaler=StandardScaler()
+scaled=scaler.fit_transform(df)
+scaled
+
+scaled.mean()
+
+scaled.std()
+

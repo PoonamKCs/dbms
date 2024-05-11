@@ -1,0 +1,64 @@
+import numpy as np
+import pandas as pd 
+df = pd.read_csv("dirty_iris.csv")
+df
+null_values = df.isna().sum().sum()
+print("Total null values :")
+null_values
+integer_types = df[["SepalLength","SepalWidth","PetalLength","PetalWidth"]]
+inf_values = np.isinf(integer_types).values.sum()
+print("Total inf values :")
+inf_values
+missing_values=(df == "?").sum().sum()
+print("Total missing values :")
+missing_values
+
+new_df = df.dropna(thresh=5)
+print(new_df)
+print("No. of observations that are complete : ", new_df.shape )
+per=len(new_df)/len(df)*100
+print("Percentage of observations that are complete : ", per , "%")
+
+df.replace(["NA","inf"], np.nan)
+R1 = df["Species"].apply(lambda x: True if x == "setosa" or x == "versicolor" or x == "virginica" else False)
+R1
+R2 = df.apply(lambda x: True if x.SepalLength>0 or x.SepalWidth>0 or x.PetalLength>0 or x.PetalWidth>0 else False, axis=1)
+R2
+R3 = df.apply(lambda x : True if x.PetalLength >= 2 * x.PetalWidth else False, axis =1)
+R3
+R4=df["SepalLength"].apply(lambda x: True if x<=30 else False)
+R4
+R5 = df.apply(lambda x: True if x.SepalLength > x.PetalLength else False, axis =1)
+R5
+RulesetE =pd.DataFrame({"Rule 1" : R1,"Rule 2" : R2, "Rule 3" : R3,"Rule 4" : R4, "Rule 5" : R5})
+RulesetE
+
+print("Number of violations in Ruleset E")
+set=len(RulesetE)-RulesetE.sum()
+set
+
+
+import matplotlib.pyplot as plt
+set.plot(kind='bar', color = ["red"])
+plt.title("Bar plotting of Ruleset violation")
+plt.xlabel("Rules")
+plt.ylabel("No. of data values that violates the rules")
+plt.show()
+
+
+
+plt.figure(figsize =(10,5))
+df.boxplot(column="SepalLength")
+plt.title("Outliers in Sepal Length")
+plt.show()
+
+RulesetE.describe()
+
+
+
+
+percentage = (len(complete_obs) / len(file)) * 100
+percentage
+file.replace(['?', -999, 'NA', 'N/A'], np.nan)
+complete_obs = file.dropna(thresh=5)
+complete_obs
